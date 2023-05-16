@@ -206,3 +206,29 @@ func (repo *PendataanRepo) GetAllDivisi(c *gin.Context) {
 
 	c.JSON(200, res)
 }
+
+func (repo *PendataanRepo) CountAlatsByDivisiID(c *gin.Context) {
+	res := models.JsonResponse{Success: true}
+
+	idStr := c.Query("divisi_id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		errorMsg := "Invalid divisi_id"
+		res.Success = false
+		res.Error = &errorMsg
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	count, err := models.CountAlatsByDivisiID(id)
+	if err != nil {
+		errorMsg := err.Error()
+		res.Success = false
+		res.Error = &errorMsg
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	res.Data = count
+	c.JSON(http.StatusOK, res)
+}

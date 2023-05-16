@@ -30,6 +30,7 @@ func SetupRouter(RepoPendataan controllers.PendataanRepo, RepoSeeder controllers
 	protectedRouter.POST("/update", api.RepoPendataan.Update)
 	protectedRouter.GET("/get-all", api.RepoPendataan.GetAll)
 	protectedRouter.GET("/get", api.RepoPendataan.GetAlatbyId)
+	protectedRouter.GET("/get-total", api.RepoPendataan.CountAlatsByDivisiID)
 
 	return r
 }
