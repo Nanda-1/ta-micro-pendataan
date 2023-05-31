@@ -97,7 +97,7 @@ func GeDivisiById(query *gorm.DB, id int) (*Divisi, error) {
 
 func CountAlatsByDivisiID(divisiID int) (int64, error) {
 	var count int64
-	if err := db.Db.Table("alats").Where("divisi_id = ?", divisiID).Count(&count).Error; err != nil {
+	if err := db.Db.Table("alat").Where("divisi_id = ?", divisiID).Count(&count).Error; err != nil {
 		return 0, err
 	}
 	return count, nil
