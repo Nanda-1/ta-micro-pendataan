@@ -40,7 +40,7 @@ func (repo *PendataanRepo) CreateAlat(c *gin.Context) {
 		errorMsg := "Divisi not found"
 		res.Success = false
 		res.Error = &errorMsg
-		c.JSON(http.StatusOK, res)
+		c.JSON(400, res)
 		c.Abort()
 		return
 	}
@@ -51,7 +51,7 @@ func (repo *PendataanRepo) CreateAlat(c *gin.Context) {
 		errorMsg := err.Error()
 		res.Success = false
 		res.Error = &errorMsg
-		c.JSON(http.StatusOK, res)
+		c.JSON(400, res)
 		c.Abort()
 		return
 	}
