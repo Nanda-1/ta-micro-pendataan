@@ -2,37 +2,41 @@ package db
 
 import (
 	"fmt"
+	"os"
 
-	"gorm.io/driver/postgres"
+	"github.com/joho/godotenv"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
-
-var DB_USERNAME = "postgres"
-var DB_PASSWORD = "admin"
-var DB_NAME = "ta_micro_pendataan"
-var DB_HOST = "127.0.0.1"
-var DB_PORT = "5432"
 
 var Db *gorm.DB
 
 func InitDb() *gorm.DB {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file:", err)
+		return nil
+	}
 	Db = connectDB()
 	return Db
 }
 
 func connectDB() *gorm.DB {
 	var err error
-
-	dsn := "host=" + DB_HOST + " user=" + DB_USERNAME + " password=" + DB_PASSWORD + " dbname=" + DB_NAME + " port=" + DB_PORT + " sslmode=disable TimeZone=Asia/Jakarta"
+	dsn := os.Getenv("DB_DEV_USERNAME") + ":" + os.Getenv("DB_DEV_PASSWORD") + "@tcp" + "(" + os.Getenv("DB_DEV_HOST") + ":" + os.Getenv("DB_DEV_PORT") + ")/" + os.Getenv("DB_DEV_NAME") + "?" + "parseTime=true&loc=Local"
 	fmt.Println("dsn : ", dsn)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		// DisableForeignKeyConstraintWhenMigrating: true,
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		PrepareStmt: true,
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
 	})
 
 	if err != nil {
 		fmt.Println("Error connecting to database : error=", err)
 		return nil
 	}
-	db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";")
+
 	return db
 }
