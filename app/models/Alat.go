@@ -12,7 +12,7 @@ import (
 
 type Alat struct {
 	Id         int       `json:"id" gorm:"primarykey"`
-	DivisiId   int       `json:"divisi_id" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:DivisiId"`
+	DivisiId   int       `json:"divisiId" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:DivisiId"`
 	Nama       string    `json:"nama"`
 	Jumlah     int       `json:"jumlah"`
 	Keterangan string    `json:"keterangan"`

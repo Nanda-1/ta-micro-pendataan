@@ -11,7 +11,7 @@ func main() {
 	packageSeeder := controllers.NewDbSeerder()
 
 	r := routers.SetupRouter(*packagePendataan, *packageSeeder)
-	err := r.Run(":8090")
+	err := r.Run(":8060")
 	if err != nil {
 		panic("[Error] failed to start Gin server due to: " + err.Error())
 	}
