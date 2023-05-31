@@ -23,5 +23,5 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - MYSQL_DATABASE=ta-micro-auth
+      - MYSQL_DATABASE=ta-micro-pendataan
       - MYSQL_ROOT_PASSWORD=nanda123
