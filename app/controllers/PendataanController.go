@@ -3,8 +3,10 @@ package controllers
 import (
 	"net/http"
 	"strconv"
+	"strings"
 	"ta_microservice_pendataan/app/models"
 	"ta_microservice_pendataan/db"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -48,12 +50,21 @@ func (repo *PendataanRepo) CreateAlat(c *gin.Context) {
 	req.Divisi = &divisi
 	addAlat, err := models.CreateAlat(repo.Db, &req)
 	if err != nil {
-		errorMsg := err.Error()
-		res.Success = false
-		res.Error = &errorMsg
-		c.JSON(400, res)
-		c.Abort()
-		return
+		// Check if the error is related to the 'created_at' column
+		if strings.Contains(err.Error(), "Incorrect datetime value") {
+			// Set a valid value for the 'created_at' column
+			req.Created_at = time.Now()
+			// Retry creating the Alat
+			addAlat, err = models.CreateAlat(repo.Db, &req)
+		}
+		if err != nil {
+			errorMsg := err.Error()
+			res.Success = false
+			res.Error = &errorMsg
+			c.JSON(400, res)
+			c.Abort()
+			return
+		}
 	}
 
 	// update relasi Alat -> Divisi
