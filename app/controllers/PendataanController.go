@@ -54,6 +54,7 @@ func (repo *PendataanRepo) CreateAlat(c *gin.Context) {
 		if strings.Contains(err.Error(), "Incorrect datetime value") {
 			// Set a valid value for the 'created_at' column
 			req.Created_at = time.Now()
+			req.Updated_at = time.Now()
 			// Retry creating the Alat
 			addAlat, err = models.CreateAlat(repo.Db, &req)
 		}
