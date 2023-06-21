@@ -34,6 +34,15 @@ func (repo *PendataanRepo) CreateAlat(c *gin.Context) {
 		c.Abort()
 		return
 	}
+	// Custom validation to check if req is empty
+	if req.Nama == "" || req.Jumlah == 0 || req.Keterangan == "" {
+		errorMsg := "Invalid request: req must not be empty"
+		res.Success = false
+		res.Error = &errorMsg
+		c.JSON(400, res)
+		c.Abort()
+		return
+	}
 
 	// ambil divisi dari database
 	divisi := models.Divisi{}
