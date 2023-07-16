@@ -36,7 +36,7 @@ func (repo *PendataanRepo) CreateAlat(c *gin.Context) {
 	}
 	// Custom validation to check if req is empty
 	if req.Nama == "" || req.Jumlah == 0 || req.Keterangan == "" {
-		errorMsg := "Invalid request: req must not be empty"
+		errorMsg := "Field Tidak Boleh Kosong"
 		res.Success = false
 		res.Error = &errorMsg
 		c.JSON(400, res)
@@ -197,20 +197,17 @@ func (repo *PendataanRepo) DeleteByID(c *gin.Context) {
 func (repo *PendataanRepo) GetAll(c *gin.Context) {
 	res := models.JsonResponse{Success: true}
 
-	// var alat []models.Alat
-	err, _ := models.GetAllAlat(repo.Db)
-	// if err != nil {
-	// 	errorMsg := "Alat tidak ada"
-	// 	res.Success = false
-	// 	res.Error = &errorMsg
-	// 	c.JSON(404, res)
-	// 	c.Abort()
-	// 	return
-	// }
+	alat, err := models.GetAllAlat(repo.Db)
+	if err != nil {
+		errorMsg := "Failed to fetch Alat data."
+		res.Success = false
+		res.Error = &errorMsg
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
 
-	res.Data = err
-
-	c.JSON(200, res)
+	res.Data = alat
+	c.JSON(http.StatusOK, res)
 }
 
 func (repo *PendataanRepo) GetAllDivisi(c *gin.Context) {

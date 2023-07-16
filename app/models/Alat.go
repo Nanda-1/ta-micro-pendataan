@@ -41,7 +41,7 @@ func CreateAlat(db *gorm.DB, a *Alat) (*Alat, error) {
 
 func GetAllAlat(db *gorm.DB) ([]Alat, error) {
 	var alat []Alat
-	if err := db.Preload("Divisi").Find(&alat).Error; err != nil {
+	if err := db.Preload("Divisi").Order("CASE nama WHEN 'Panjat Tebing' THEN 1 WHEN 'Gunung Hutan' THEN 2 WHEN 'Selam' THEN 3 ELSE 4 END").Find(&alat).Error; err != nil {
 		return nil, err
 	}
 	return alat, nil
